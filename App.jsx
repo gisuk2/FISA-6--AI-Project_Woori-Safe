@@ -12,6 +12,7 @@ const App = () => {
   const fetchStats = async () => {
     setLoading(true);
     try {
+      // 5174 포트 대응을 위해 주소 확인 필요
       const response = await axios.get('http://localhost:8000/api/smishing-stats');
       if (response.data.status === "success") {
         setStats(response.data.data);
@@ -31,6 +32,7 @@ const App = () => {
 
   return (
     <div className="main-container">
+      {/* 애니메이션 요소 */}
       {isAnimating && (
         <>
           <div className="ball ball-black"></div>
@@ -45,7 +47,7 @@ const App = () => {
         </div>
         <button onClick={fetchStats} className="clean-button">
           <RefreshCcw size={18} className={loading ? "spin" : ""} />
-          데이터 업데이트
+          업데이트
         </button>
       </header>
 
@@ -58,20 +60,20 @@ const App = () => {
 
           <div className="boundary-box">
             <Activity className="pulse-icon" size={40} />
-            <p className="boundary-text">문자 메시지<br/>분석 바운더리</p>
+            <p className="boundary-text">메시지 분석<br/>바운더리</p>
             <div className="shimmer-line"></div>
           </div>
         </section>
 
         <section className="stats-section">
           <div className="chart-card">
-            <h3 className="chart-title">📊 유형별 스미싱 통계 (실시간)</h3>
+            <h3 className="chart-title">📊 실시간 스미싱 통계</h3>
             <div className="chart-container">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={stats}>
                   <XAxis dataKey="smishing_type" axisLine={false} tickLine={false} />
                   <YAxis hide />
-                  <Tooltip cursor={{fill: 'transparent'}} contentStyle={{borderRadius: '12px', border: 'none', boxShadow: '0 5px 15px rgba(0,0,0,0.1)'}} />
+                  <Tooltip cursor={{fill: 'transparent'}} />
                   <Bar dataKey="count" radius={[10, 10, 0, 0]}>
                     {stats.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={index % 2 === 0 ? '#0E4C96' : '#00E5CC'} />
