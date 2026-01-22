@@ -104,7 +104,7 @@ export default function ResultDashboard() {
           <div className="col-span-12 md:col-span-4 bg-white p-10 rounded-[24px] shadow-sm">
             <p className="text-sm font-bold text-gray-400 mb-6 flex items-center gap-2 tracking-widest">📰 관련 뉴스</p>
             <div className="space-y-4">
-              {["스미싱 피해 급증... 국민은행 사칭", "택배 스미싱 새로운 수법 등장", "금융감독원 스미싱 예방 가이드"].map((news, i) => (
+              {["스미싱 피해 급증.... 국민은행 사칭", "택배 스미싱 새로운 수법 등장", "금융감독원 스미싱 예방 가이드"].map((news, i) => (
                 <div key={i} className="border-b border-gray-50 pb-3 last:border-0 hover:bg-gray-50 transition-all cursor-pointer">
                   <h4 className="text-[14px] font-bold text-[#333] mb-1 leading-tight">{news}</h4>
                   <p className="text-[11px] text-gray-400">2026.01.22</p>
