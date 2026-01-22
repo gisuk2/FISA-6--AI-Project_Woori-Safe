@@ -7,7 +7,7 @@ import './App.css';
 const App = () => {
   const [stats, setStats] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [isAnimating, setIsAnimating] = useState(true); // 처음 접속 시 애니메이션 실행
+  const [isAnimating, setIsAnimating] = useState(true);
 
   const fetchStats = async () => {
     setLoading(true);
@@ -25,14 +25,12 @@ const App = () => {
 
   useEffect(() => {
     fetchStats();
-    // 3초 후 애니메이션 종료(공 제거)
-    const timer = setTimeout(() => setIsAnimating(false), 3000);
+    const timer = setTimeout(() => setIsAnimating(false), 4000);
     return () => clearTimeout(timer);
   }, []);
 
   return (
-    <div className="glass-bg main-container">
-      {/* 애니메이션 공 */}
+    <div className="main-container">
       {isAnimating && (
         <>
           <div className="ball ball-black"></div>
@@ -60,19 +58,20 @@ const App = () => {
 
           <div className="boundary-box">
             <Activity className="pulse-icon" size={40} />
-            <p>문자 메시지<br/>분석 바운더리</p>
+            <p className="boundary-text">문자 메시지<br/>분석 바운더리</p>
             <div className="shimmer-line"></div>
           </div>
         </section>
 
         <section className="stats-section">
           <div className="chart-card">
-            <h3>📊 유형별 스미싱 통계</h3>
+            <h3 className="chart-title">📊 유형별 스미싱 통계 (실시간)</h3>
             <div className="chart-container">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={stats}>
-                  <XAxis dataKey="smishing_type" />
-                  <Tooltip cursor={{fill: 'transparent'}} />
+                  <XAxis dataKey="smishing_type" axisLine={false} tickLine={false} />
+                  <YAxis hide />
+                  <Tooltip cursor={{fill: 'transparent'}} contentStyle={{borderRadius: '12px', border: 'none', boxShadow: '0 5px 15px rgba(0,0,0,0.1)'}} />
                   <Bar dataKey="count" radius={[10, 10, 0, 0]}>
                     {stats.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={index % 2 === 0 ? '#0E4C96' : '#00E5CC'} />
