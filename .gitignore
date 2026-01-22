@@ -1,0 +1,24 @@
+# --- Python & FastAPI (은욱님 담당) ---
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+# ⚠️ 가장 중요: DB 정보와 API 키가 들어있는 환경변수 파일
+.env
+
+# --- React (팀원 담당) ---
+node_modules/
+build/
+.DS_Store
+dist/
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# --- IDE & System ---
+.vscode/
+.idea/
+*.log
