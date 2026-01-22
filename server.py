@@ -12,7 +12,7 @@ app = FastAPI()
 # CORS 설정: 리액트 포트(5173 또는 3000) 허용
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], # 테스트를 위해 전체 허용, 보안 필요시 리액트 주소만 기입
+    allow_origins=["http://localhost:5173", "http://localhost:5174"], # 두 포트 모두 추가
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
