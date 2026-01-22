@@ -1,0 +1,79 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
+
+:root {
+  --font-size: 16px;
+  --background: #ffffff;
+  --foreground: oklch(0.145 0 0);
+  --primary: #0e4c96;
+  --woori-blue: #0e4c96;
+  --woori-light-blue: #e8f1fa;
+  --radius: 0.625rem;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-woori-blue: var(--woori-blue);
+  --color-woori-light-blue: var(--woori-light-blue);
+  --radius-lg: var(--radius);
+}
+
+/* --- 커스텀 스타일 --- */
+.animated-gradient-bg {
+  background: linear-gradient(-45deg, #ffffff, #f5f5f5, #e8e8e8, #fafafa);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.minimal-card {
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(20px);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.clean-button {
+  background: #00e5cc;
+  color: #000;
+  font-weight: 700;
+  border-radius: 12px;
+  padding: 12px 32px;
+  border: none;
+  cursor: pointer;
+}
+
+.ball {
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  z-index: 0;
+  filter: blur(40px);
+  opacity: 0.5;
+}
+
+.ball-cyan { background: #00e5cc; animation: bounce 5s infinite; }
+.ball-black { background: #000; animation: bounce 7s infinite reverse; }
+
+@keyframes bounce {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(30px, 50px); }
+}
+
+body {
+  font-family: "Pretendard", sans-serif;
+  margin: 0;
+  background: var(--background);
+}
