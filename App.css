@@ -1,66 +1,65 @@
-/* 1. 최상단에 위치해야 하는 import */
+/* 1. 무조건 최상단에 위치해야 합니다 */
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
 
-/* 2. 변수 및 테마 설정 */
+/* 2. 그 다음 테마 설정 */
 @custom-variant dark (&:is(.dark *));
 
 :root {
   --woori-blue: #0E4C96;
   --neon-cyan: #00E5CC;
-  --font-size: 16px;
-  --background: #ffffff;
 }
 
-/* 3. 기본 레이아웃 보정 (중앙 정렬의 핵심) */
-body, html {
+/* 3. 브라우저 기본 마진 제거 및 전체 중앙 정렬 */
+html, body {
   margin: 0;
   padding: 0;
   width: 100%;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
+  height: 100%;
   background-color: #f8faff;
+  font-family: 'Pretendard', sans-serif;
 }
 
-#root { width: 100%; }
+/* 리액트 루트 컨테이너를 화면 꽉 차게 설정 */
+#root {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
 
-/* 전체 컨테이너를 화면 정중앙에 배치 */
 .main-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: center; /* 가로 중앙 */
   width: 100%;
   min-height: 100vh;
   position: relative;
-  overflow-x: hidden;
 }
 
-/* 피그마의 유리 배경 효과 */
-.glass-bg {
-  width: 100%;
-  min-height: 100vh;
-  background: linear-gradient(135deg, #e8eaff 0%, #f5e8ff 25%, #ffe8fb 50%, #e8f8ff 75%, #e8fffd 100%);
-  background-size: 400% 400%;
-  animation: gradientShift 15s ease infinite;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-/* 4. Hero 섹션 (텍스트와 박스 배치) */
-.content-wrapper {
+/* 헤더 및 콘텐츠 영역 넓이 제한 및 중앙 정렬 */
+.header, .content-wrapper {
   width: 100%;
   max-width: 1200px;
+  box-sizing: border-box;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  padding: 30px 20px;
+  align-items: center;
+}
+
+.content-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 40px 20px;
+  padding: 0 20px;
 }
 
 .hero-section {
   width: 100%;
   display: flex;
-  justify-content: space-around; /* 요소 간 간격 균등 */
+  justify-content: space-around; /* 텍스트와 박스 사이 간격 */
   align-items: center;
   height: 450px;
   position: relative;
@@ -68,56 +67,39 @@ body, html {
 
 /* 텍스트 스타일 */
 .title-text {
-  font-size: clamp(4rem, 10vw, 8rem);
+  font-size: clamp(3rem, 10vw, 7.5rem);
   font-weight: 900;
-  line-height: 0.9;
+  line-height: 0.95;
   margin: 0;
+  letter-spacing: -2px;
 }
 
 .neon-text { color: var(--neon-cyan); }
 
-/* 피그마의 볼 애니메이션 (좌표를 Hero 섹션 내 중앙 기준으로 보정) */
-.ball {
-  position: absolute;
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  z-index: 50;
+/* 볼 애니메이션 (Hero 섹션 기준 상대 좌표) */
+.ball { position: absolute; width: 70px; height: 70px; border-radius: 50%; z-index: 10; }
+.ball-black { background: black; animation: blackBall 4s infinite; }
+.ball-cyan { background: var(--neon-cyan); animation: cyanBall 4s 0.2s infinite; }
+
+@keyframes blackBall {
+  0% { top: -50px; left: 50%; opacity: 1; }
+  40% { top: 250px; left: 85%; }
+  75% { top: 100px; left: 5%; }
+  100% { top: 100px; left: 5%; transform: scale(0); opacity: 0; }
 }
 
-.ball-black {
-  background: radial-gradient(circle at 30% 30%, #333, #000 60%, #000);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-  animation: blackBallBounce 4s ease-in-out infinite;
+@keyframes cyanBall {
+  0% { top: -50px; left: 45%; opacity: 1; }
+  45% { top: 300px; left: 85%; }
+  80% { top: 250px; left: 5%; }
+  100% { top: 250px; left: 5%; transform: scale(0); opacity: 0; }
 }
 
-.ball-cyan {
-  background: radial-gradient(circle at 30% 30%, #66FFF0, #00E5CC 50%, #00C4B0);
-  box-shadow: 0 20px 40px rgba(0, 229, 204, 0.6);
-  animation: cyanBallBounce 4s ease-in-out 0.3s infinite;
-}
-
-/* 피그마 애니메이션 좌표 보정 (오른쪽 80% 지점 박스에 충돌 후 왼쪽 15%로 이동) */
-@keyframes blackBallBounce {
-  0% { top: -100px; left: 50%; opacity: 1; transform: scale(1); }
-  40% { top: 50%; left: 80%; transform: scale(1.1, 0.9); } /* 박스 충돌 */
-  75% { top: 30%; left: 15%; transform: scale(1); } /* DON'T 로 이동 */
-  100% { top: 30%; left: 15%; transform: scale(0); opacity: 0; }
-}
-
-@keyframes cyanBallBounce {
-  0% { top: -100px; left: 45%; opacity: 1; transform: scale(1); }
-  45% { top: 60%; left: 80%; transform: scale(1.1, 0.9); } /* 박스 충돌 */
-  80% { top: 50%; left: 15%; transform: scale(1); } /* SMISHING 으로 이동 */
-  100% { top: 50%; left: 15%; transform: scale(0); opacity: 0; }
-}
-
-/* 기타 피그마 스타일... (카드, 버튼 등) */
-.minimal-card {
-  background: rgba(255, 255, 255, 0.25);
-  backdrop-filter: blur(20px);
-  border-radius: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  padding: 30px;
+.chart-card {
   width: 100%;
+  background: white;
+  padding: 40px;
+  border-radius: 30px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+  margin-top: 30px;
 }
