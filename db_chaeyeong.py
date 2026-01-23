@@ -4,7 +4,7 @@ from datetime import datetime
 from openai import OpenAI
 
 # 1. API 및 DB 설정21
-SOLAR_API_KEY = "up_MvK9gICmaBP29ogCFgzQ64QACYTyJ"
+SOLAR_API_KEY = "up_X71x8vGnF9IbwyLQl8wZUmdKJD2LI"
 client = OpenAI(api_key=SOLAR_API_KEY, base_url="https://api.upstage.ai/v1/solar")
 
 db_config = {
