@@ -3,7 +3,7 @@ import json
 from datetime import datetime
 from openai import OpenAI
 
-# 1. API 및 DB 설정
+# 1. API 및 DB 설정21
 SOLAR_API_KEY = "up_MvK9gICmaBP29ogCFgzQ64QACYTyJ"
 client = OpenAI(api_key=SOLAR_API_KEY, base_url="https://api.upstage.ai/v1/solar")
 
