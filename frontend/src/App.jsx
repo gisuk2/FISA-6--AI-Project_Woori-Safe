@@ -13,65 +13,69 @@ function SmishingMain() {
       alert("분석할 문자 내용을 입력해주세요!");
       return;
     }
-
     setLoading(true);
     try {
-      // 1. 입력 텍스트를 JSON 형식으로 은욱님 서버에 전송
-      const response = await axios.post('http://192.168.0.71:8000/analyze', {
-        text: message 
-      });
-      
-      // 2. 서버 응답(JSON) 결과를 가지고 대시보드로 이동
-      navigate('/result', { 
-        state: { 
-          text: message, 
-          analysisResult: response.data 
-        } 
-      });
+      const response = await axios.post('http://192.168.0.102:8000/analyze', {
+        content: message 
+      }, { timeout: 10000 });
+      navigate('/result', { state: { text: message, analysisResult: response.data } });
     } catch (error) {
-      console.error("서버 통신 에러:", error);
-      alert("서버 연결에 실패했습니다. 서버가 켜져 있는지 확인하세요!");
+      console.error("서버 통신 실패:", error);
+      alert("연결 실패! 서버 상태를 확인하세요.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="animated-gradient-bg min-h-screen w-full relative overflow-hidden flex items-center justify-center font-sans px-[5%]">
-      <div className="ball ball-black !fixed !top-[20%] !left-[10%] opacity-20 blur-[100px]" />
-      <div className="ball ball-cyan !fixed !bottom-[15%] !right-[10%] opacity-30 blur-[120px]" />
+    <div className="min-h-screen w-full relative overflow-hidden flex items-center justify-center bg-[#f8f9fa] font-sans">
+      <style>{`
+        @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-15px); } }
+        /* 배경 공 서서히 나타났다 사라지는 효과 */
+        @keyframes pulseFade { 
+          0%, 100% { opacity: 0.1; transform: scale(0.95); } 
+          50% { opacity: 0.4; transform: scale(1.05); } 
+        }
+        .animate-title { animation: float 4s ease-in-out infinite; }
+        .animate-bg-pulse { animation: pulseFade 6s ease-in-out infinite; }
+        .input-expand { transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .input-expand:focus { transform: scale(1.03); box-shadow: 0 15px 30px rgba(0,0,0,0.05); }
+      `}</style>
 
-      <div className="relative z-10 w-full max-w-[1200px] flex flex-col md:flex-row items-center justify-between gap-20">
+      {/* 배경: 청록색 상단, 검정색 하단 + 페이드 애니메이션 */}
+      <div className="fixed top-[-5%] left-[-5%] w-[600px] h-[600px] bg-[#00e5cc] blur-[130px] rounded-full pointer-events-none animate-bg-pulse" />
+      <div className="fixed bottom-[-10%] right-[-5%] w-[700px] h-[700px] bg-black blur-[150px] rounded-full pointer-events-none animate-bg-pulse" style={{ animationDelay: '-3s' }} />
+
+      {loading && (
+        <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-white/80 backdrop-blur-md">
+          <div className="w-12 h-12 border-4 border-[#00e5cc]/20 border-t-[#00e5cc] rounded-full animate-spin mb-4"></div>
+          <p className="text-[#00e5cc] font-black animate-pulse">AI 분석 중...</p>
+        </div>
+      )}
+
+      <div className="relative z-10 w-full max-w-[1200px] flex flex-col md:flex-row items-center justify-between gap-20 px-10">
         <div className="flex-1 text-left">
-          <div className="bg-black text-[#00e5cc] px-5 py-2 rounded-full text-[14px] font-bold inline-block mb-8">스미싱 피해예방 서비스</div>
-          <h1 className="text-[72px] md:text-[84px] font-[900] leading-[1.1] tracking-[-0.04em] mb-4 text-[#1a1a1a]">Don't <br /><span className="text-[#00e5cc] neon-text">Smishing!</span></h1>
+          <div className="bg-black text-[#00e5cc] px-5 py-2 rounded-full text-[14px] font-bold mb-8 inline-block italic">LIVE SECURITY SERVICE</div>
+          <h1 className="text-[72px] md:text-[84px] font-[900] leading-[1.1] tracking-[-0.04em] mb-4 text-[#1a1a1a]">
+            <div className="animate-title">Don't <br /><span className="text-[#00e5cc]">Smishing!</span></div>
+          </h1>
           <h2 className="text-[24px] font-bold text-[#333] mb-6">신은욱과 함께하는 스미싱 피해예방</h2>
+          <p className="text-[18px] text-[#666] leading-[1.6] max-w-[400px]">의심스러운 문자 메시지를 AI가 분석하여 실시간으로 위험도를 판단해드립니다.</p>
         </div>
 
         <div className="flex-1 w-full max-w-[500px]">
-          <div className="minimal-card p-10 bg-white/60 backdrop-blur-[30px] rounded-[40px] shadow-2xl border border-white">
-            <div className="flex items-center gap-4 mb-8">
-              <div className="w-12 h-12 bg-[#0a1b2e] rounded-2xl flex items-center justify-center text-[#00e5cc] font-bold">Q</div>
-              <div>
-                <h3 className="text-[20px] font-bold text-[#1a1a1a]">문자 메시지 분석</h3>
-                <p className="text-[14px] text-[#999]">의심스러운 문자를 입력하세요</p>
-              </div>
+          <div className="p-10 bg-white/60 backdrop-blur-[30px] rounded-[40px] shadow-2xl border border-white">
+            <div className="flex items-center gap-4 mb-8 text-[#1a1a1a]">
+              <div className="w-14 h-14 bg-[#1a1a1a] rounded-2xl flex items-center justify-center text-[#00e5cc] font-black text-2xl shadow-xl">Q</div>
+              <h3 className="text-[20px] font-bold">문자 메시지 분석</h3>
             </div>
-            <div className="bg-[#f4f6f8] rounded-[24px] p-6 mb-8 border border-black/[0.03]">
-              <textarea 
-                className="w-full bg-transparent border-none outline-none text-[16px] h-[150px] resize-none"
-                placeholder="내용을 입력하세요..."
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-              />
-            </div>
-            <button 
-              onClick={handleAnalyze}
-              disabled={loading}
-              className={`w-full ${loading ? 'bg-gray-400' : 'bg-[#00e5cc] hover:bg-[#00d1ba]'} text-black font-black py-5 rounded-[20px] text-[18px] transition-all active:scale-[0.98] shadow-lg shadow-cyan-400/20`}
-            >
-              {loading ? 'AI 분석 중...' : '분석하기 →'}
-            </button>
+            <textarea 
+              className="input-expand w-full bg-white/50 border border-black/[0.05] outline-none p-6 rounded-[24px] text-[16px] text-[#333] h-44 resize-none mb-8"
+              placeholder="내용을 입력하세요..."
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+            />
+            <button onClick={handleAnalyze} className="w-full bg-[#00e5cc] hover:bg-[#00d1ba] text-[#1a1a1a] font-black py-5 rounded-[22px] text-[20px] transition-all active:scale-[0.95] shadow-lg shadow-cyan-400/20">분석하기 →</button>
           </div>
         </div>
       </div>
@@ -79,13 +83,4 @@ function SmishingMain() {
   );
 }
 
-export default function App() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<SmishingMain />} />
-        <Route path="/result" element={<ResultDashboard />} />
-      </Routes>
-    </BrowserRouter>
-  );
-}
+export default function App() { return ( <BrowserRouter><Routes><Route path="/" element={<SmishingMain />} /><Route path="/result" element={<ResultDashboard />} /></Routes></BrowserRouter> ); }
