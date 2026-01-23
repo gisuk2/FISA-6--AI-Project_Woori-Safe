@@ -23,7 +23,7 @@ function SmishingMain() {
       navigate('/result', { state: { text: message, analysisResult: response.data } });
     } catch (error) {
       console.error("서버 통신 실패:", error);
-      alert("연결 실패! 은욱님 서버의 CORS 설정과 IP를 확인하세요.");
+      alert("연결 실패!");
     } finally {
       setLoading(false);
     }
