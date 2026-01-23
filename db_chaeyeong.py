@@ -115,3 +115,4 @@ if __name__ == "__main__":
         print(f"\n🔍 분석 중: {msg[:30]}...")
         res = analyze_and_get_news(msg)
         save_normalized_data(msg, res)
+        
