@@ -1,4 +1,4 @@
-# 🛡️ 우리Safe (Woori-Safe)
+# 🛡️ Don't Smishing
 > **Solar LLM 기반 지능형 스미싱 탐지 및 실시간 트렌드 시각화 플랫폼**
 
 ![메인 이미지](main.png)
