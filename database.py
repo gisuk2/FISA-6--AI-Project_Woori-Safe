@@ -16,26 +16,39 @@ def get_db_conn():
         cursorclass=pymysql.cursors.DictCursor
     )
 
-def get_class_stats():
-    conn = get_db_conn()
-    with conn.cursor() as cursor:
-        cursor.execute("SELECT class, COUNT(*) as count FROM test2 GROUP BY class")
-        result = cursor.fetchall()
-    conn.close()
-    return result
+# database.py 수정
 
-def get_type_stats():
+# [유형별] smishing_type -> name, total_count -> count
+def get_smishing_type_stats():
     conn = get_db_conn()
-    with conn.cursor() as cursor:
-        cursor.execute("SELECT smishing_type, COUNT(*) as count FROM test2 WHERE class = 2 GROUP BY smishing_type ORDER BY count DESC")
-        result = cursor.fetchall()
-    conn.close()
-    return result
+    try:
+        with conn.cursor() as cursor:
+            sql = """
+                SELECT smishing_type AS name, COUNT(*) AS count 
+                FROM test2 
+                WHERE class = 2 
+                GROUP BY name 
+                ORDER BY count DESC 
+                LIMIT 10
+            """
+            cursor.execute(sql)
+            return cursor.fetchall()
+    finally:
+        conn.close()
 
-def get_recent_messages():
+# [월별] month -> name, monthly_count -> count
+def get_monthly_detection_stats():
     conn = get_db_conn()
-    with conn.cursor() as cursor:
-        cursor.execute("SELECT * FROM test2 ORDER BY created_at DESC LIMIT 10")
-        result = cursor.fetchall()
-    conn.close()
-    return result
+    try:
+        with conn.cursor() as cursor:
+            sql = """
+                SELECT DATE_FORMAT(created_at, '%Y-%m') AS name, COUNT(*) AS count 
+                FROM test2 
+                WHERE class = 2 
+                GROUP BY name 
+                ORDER BY name ASC
+            """
+            cursor.execute(sql)
+            return cursor.fetchall()
+    finally:
+        conn.close()
